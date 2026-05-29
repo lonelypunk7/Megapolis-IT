@@ -1,0 +1,187 @@
+{
+  "info": {
+    "name": "WifiAuth.Host 0.0.1.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://mega-wifi.k8s.megapolis-it.pro",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Получение списка попыток авторизации",
+          "request": {
+            "url": "{{baseUrl}}/api/v1/auth-log/logs?filter.userPhone&filter.deviceMac&filter.from&filter.to&page.index&page.size",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        },
+        {
+          "name": "Отправка OTP-кода по SMS.",
+          "request": {
+            "url": "{{baseUrl}}/api/v1/sms-auth/send-otp",
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": {
+                "$ref": "#/components/schemas/WifiAuth.Host.Models.Requests.SendOtpRequest"
+              }
+            },
+            "response": []
+          }
+        },
+        {
+          "name": "Верификация OTP-кода.",
+          "request": {
+            "url": "{{baseUrl}}/api/v1/sms-auth/verify-otp",
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": {
+                "$ref": "#/components/schemas/WifiAuth.Host.Models.Requests.VerifyOtpRequest"
+              }
+            },
+            "response": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Отвечает, треубет ли приложение перезагрузки",
+          "request": {
+            "url": "{{baseUrl}}/healthy",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        },
+        {
+          "name": "Отвечает, завершило ли приложение инициализацию",
+          "request": {
+            "url": "{{baseUrl}}/ready",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Migration",
+      "item": [
+        {
+          "name": "Возвращает текущую версию миграции",
+          "request": {
+            "url": "{{baseUrl}}/migration/get-current-version?database",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        },
+        {
+          "name": "Накатывает все миграции",
+          "request": {
+            "url": "{{baseUrl}}/migration/migrate-up?database&servicePassword",
+            "method": "POST",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        },
+        {
+          "name": "Откатывает миграцию на rollbackCount шагов",
+          "request": {
+            "url": "{{baseUrl}}/migration/rollback?database&rollbackCount&servicePassword",
+            "method": "POST",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "RADIUS",
+      "item": [
+        {
+          "name": "Авторизация по MAC адресу устройства пользователя для RADIUS сервера",
+          "request": {
+            "url": "{{baseUrl}}/radius/authorize?deviceMac&deviceIp&accessPointId&accessPointIp&ssid",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "SUDIR",
+      "item": [
+        {
+          "name": "Перенаправление на страницу авторизации СУДИР(MosID) для запроса кода авторизации",
+          "request": {
+            "url": "{{baseUrl}}/sudir/authorize",
+            "method": "POST",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        },
+        {
+          "name": "Обработка кода авторизации полученного от СУДИР(MosID)",
+          "request": {
+            "url": "{{baseUrl}}/sudir/callback?state&code",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        },
+        {
+          "name": "HTML страница для отладки пока нет фрона",
+          "request": {
+            "url": "{{baseUrl}}/sudir/captive-portal-for-debug",
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "response": []
+          }
+        }
+      ]
+    }
+  ]
+}
