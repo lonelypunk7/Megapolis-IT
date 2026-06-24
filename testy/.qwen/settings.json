@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Read(//Users/leonid/Projects/Megapolis-IT/**)",
+      "Bash(git checkout *)",
+      "Bash(kill *)"
+    ]
+  },
+  "$version": 4
+}

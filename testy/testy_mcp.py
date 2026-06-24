@@ -14,9 +14,9 @@ from typing import Any
 
 load_dotenv()
 
-BASE_URL = os.getenv("TESTY_URL", "https://testy.megapolis-it.pro")
-LOGIN = os.getenv("TESTY_LOGIN", "leonidgalockin")
-PASSWORD = os.getenv("TESTY_PASSWORD", "ihS|4#Ba")
+BASE_URL = os.getenv("TESTY_URL")
+LOGIN = os.getenv("TESTY_LOGIN")
+PASSWORD = os.getenv("TESTY_PASSWORD")
 
 _auth_state = {"token": None, "refresh": None}
 
