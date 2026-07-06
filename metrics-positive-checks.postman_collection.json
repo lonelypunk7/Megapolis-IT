@@ -1,0 +1,299 @@
+{
+  "info": {
+    "name": "15-min Metrics — Положительные проверки",
+    "description": "POST /api/external/v1/access-points/metrics/{provider-id}\n\nEnvironment: baseUrl, metricsPath, providerId, deviceId, deviceId2, deviceMac, authUser, authPass\n\nURL: {{baseUrl}}{{metricsPath}}{{providerId}} — без пробелов",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{authUser}}", "type": "string" },
+      { "key": "password", "value": "{{authPass}}", "type": "string" }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.environment.get('ts') && !pm.variables.get('skipDefaultTs')) {",
+          "    pm.environment.set('ts', Math.floor(Date.now() / 1000));",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+          "const body = pm.response.json();",
+          "pm.test('status ok', function () { pm.expect(body.status).to.eql('ok'); });",
+          "pm.test('original_provider_id', function () {",
+          "    pm.expect(body.original_provider_id).to.eql(pm.environment.get('providerId'));",
+          "});",
+          "if (body.errors !== undefined && body.errors !== null) {",
+          "    pm.test('no errors', function () { pm.expect(body.errors).to.be.empty; });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "P-01 Smoke availability=1",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"id\": \"{{deviceMac}}/availability/{{ts}}\",\n    \"ts\": {{ts}},\n    \"device_id\": \"{{deviceId}}\",\n    \"device_type\": \"ap\",\n    \"sensor_type\": \"availability\",\n    \"sensor_value\": 1\n  }\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Минимальный happy path: 1 метрика availability=1"
+      }
+    },
+    {
+      "name": "P-02 Full 7 metrics 1 AP",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"id\":\"{{deviceMac}}/availability/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"availability\",\"sensor_value\":1},\n  {\"id\":\"{{deviceMac}}/uptime/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":413575},\n  {\"id\":\"{{deviceMac}}/associated_users/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":11},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":1393305},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":2730419},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":580},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":1137}\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Полный 15-мин срез: 7 метрик, 1 точка, 1 строка в ClickHouse"
+      }
+    },
+    {
+      "name": "P-03 availability=0",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"id\": \"{{deviceMac}}/availability/{{ts}}\",\n    \"ts\": {{ts}},\n    \"device_id\": \"{{deviceId}}\",\n    \"device_type\": \"ap\",\n    \"sensor_type\": \"availability\",\n    \"sensor_value\": 0\n  }\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Точка недоступна: sensor_value=0 валиден"
+      }
+    },
+    {
+      "name": "P-04 ts boundary minus 1 hour",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.variables.set('skipDefaultTs', '1');",
+              "pm.environment.set('ts', Math.floor(Date.now() / 1000) - 3600);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"id\": \"{{deviceMac}}/availability/{{ts}}\",\n    \"ts\": {{ts}},\n    \"device_id\": \"{{deviceId}}\",\n    \"device_type\": \"ap\",\n    \"sensor_type\": \"availability\",\n    \"sensor_value\": 1\n  }\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Граница ts: now - 3600 сек"
+      }
+    },
+    {
+      "name": "P-05 ts boundary plus 15 min",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.variables.set('skipDefaultTs', '1');",
+              "pm.environment.set('ts', Math.floor(Date.now() / 1000) + 900);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"id\": \"{{deviceMac}}/availability/{{ts}}\",\n    \"ts\": {{ts}},\n    \"device_id\": \"{{deviceId}}\",\n    \"device_type\": \"ap\",\n    \"sensor_type\": \"availability\",\n    \"sensor_value\": 1\n  }\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Граница ts: now + 900 сек"
+      }
+    },
+    {
+      "name": "P-06 ts equals 0",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.variables.set('skipDefaultTs', '1');",
+              "pm.environment.set('ts', 0);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"id\": \"{{deviceMac}}/availability/0\",\n    \"ts\": 0,\n    \"device_id\": \"{{deviceId}}\",\n    \"device_type\": \"ap\",\n    \"sensor_type\": \"availability\",\n    \"sensor_value\": 1\n  }\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "ts=0 допустим по требованиям"
+      }
+    },
+    {
+      "name": "P-07 zero numeric metrics",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"id\":\"{{deviceMac}}/availability/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"availability\",\"sensor_value\":1},\n  {\"id\":\"{{deviceMac}}/uptime/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":0},\n  {\"id\":\"{{deviceMac}}/associated_users/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":0},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":0},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":0},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":0},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":0}\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Все числовые метрики = 0, кроме availability=1"
+      }
+    },
+    {
+      "name": "P-08 two APs one request",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"id\":\"{{deviceMac}}/availability/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"availability\",\"sensor_value\":1},\n  {\"id\":\"{{deviceMac}}/uptime/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":100},\n  {\"id\":\"{{deviceMac}}/associated_users/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":5},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":1000},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":2000},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":100},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":200},\n  {\"id\":\"{{deviceMac}}/availability/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"availability\",\"sensor_value\":1},\n  {\"id\":\"{{deviceMac}}/uptime/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":200},\n  {\"id\":\"{{deviceMac}}/associated_users/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":3},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":500},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":800},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":50},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId2}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":80}\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "2 точки × 7 метрик → 2 строки в ClickHouse"
+      }
+    },
+    {
+      "name": "P-09 ts from availability",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.variables.set('skipDefaultTs', '1');",
+              "const t1 = Math.floor(Date.now() / 1000);",
+              "pm.environment.set('t1', t1);",
+              "pm.environment.set('t2', t1 - 60);",
+              "pm.environment.set('t3', t1 - 120);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"id\":\"{{deviceMac}}/availability/{{t1}}\",\"ts\":{{t1}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"availability\",\"sensor_value\":1},\n  {\"id\":\"{{deviceMac}}/uptime/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":100},\n  {\"id\":\"{{deviceMac}}/associated_users/{{t3}}\",\"ts\":{{t3}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":2},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":100},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":200},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":10},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":20}\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Разные ts; в CH время с оборудования = t1 (availability)"
+      }
+    },
+    {
+      "name": "P-10 ts min without availability",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.variables.set('skipDefaultTs', '1');",
+              "const t1 = Math.floor(Date.now() / 1000);",
+              "pm.environment.set('t1', t1);",
+              "pm.environment.set('t2', t1 - 60);",
+              "pm.environment.set('t3', t1 - 300);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"id\":\"{{deviceMac}}/uptime/{{t1}}\",\"ts\":{{t1}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":100},\n  {\"id\":\"{{deviceMac}}/associated_users/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":2},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{t3}}\",\"ts\":{{t3}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":100},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":200},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{t1}}\",\"ts\":{{t1}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":10},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{t2}}\",\"ts\":{{t2}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":20}\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Нет availability; в CH ts = t3 (минимальный)"
+      }
+    },
+    {
+      "name": "P-11 repeat send (run twice)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\"id\":\"{{deviceMac}}/availability/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"availability\",\"sensor_value\":1},\n  {\"id\":\"{{deviceMac}}/uptime/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"uptime\",\"sensor_value\":413575},\n  {\"id\":\"{{deviceMac}}/associated_users/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"associated_users\",\"sensor_value\":11},\n  {\"id\":\"{{deviceMac}}/traffic_tx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_volume\",\"sensor_value\":1393305},\n  {\"id\":\"{{deviceMac}}/traffic_rx_volume/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_volume\",\"sensor_value\":2730419},\n  {\"id\":\"{{deviceMac}}/traffic_tx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_tx_speed\",\"sensor_value\":580},\n  {\"id\":\"{{deviceMac}}/traffic_rx_speed/{{ts}}\",\"ts\":{{ts}},\"device_id\":\"{{deviceId}}\",\"device_type\":\"ap\",\"sensor_type\":\"traffic_rx_speed\",\"sensor_value\":1137}\n]",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}{{metricsPath}}{{providerId}}",
+        "description": "Запусти 2 раза подряд — в CH должно быть +2 строки"
+      }
+    }
+  ]
+}

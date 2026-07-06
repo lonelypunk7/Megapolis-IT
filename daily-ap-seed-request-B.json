@@ -1,0 +1,36 @@
+{
+  "importModels": [
+    {
+      "id": "TEST-AP-SUB-001",
+      "mac": "00:04:56:9e:db:01",
+      "standalone": false,
+      "status": "active",
+      "nas_ip": "",
+      "latitude": "55.770000",
+      "longitude": "37.620000",
+      "location_id": "LOC-SUB-001",
+      "address": "г Москва, субоператор enforta, объект 1",
+      "location_info": "TEST-AP-SUB-001 — точка субоператора enforta",
+      "category_id": "02a35c2a-1be6-4371-82f4-b0f899c975f0",
+      "gk_name": "У-25-21",
+      "provider_id": "nauka-svyaz",
+      "original_provider_id": "enforta"
+    },
+    {
+      "id": "TEST-AP-SUB-002",
+      "mac": "00:04:56:9e:db:02",
+      "standalone": false,
+      "status": "active",
+      "nas_ip": "",
+      "latitude": "55.771000",
+      "longitude": "37.621000",
+      "location_id": "LOC-SUB-002",
+      "address": "г Москва, субоператор enforta, объект 2",
+      "location_info": "TEST-AP-SUB-002 — вторая точка субоператора",
+      "category_id": "3805b2af-c25a-452d-be38-620d12d21548",
+      "gk_name": "У-25-21",
+      "provider_id": "nauka-svyaz",
+      "original_provider_id": "enforta"
+    }
+  ]
+}

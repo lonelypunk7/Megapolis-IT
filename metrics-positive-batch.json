@@ -1,0 +1,282 @@
+[
+  {
+    "id": "20:28:3e:bc:0d:01/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/availability/{{ts1}}",
+    "ts": {{ts1}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/uptime/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "uptime",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/uptime/{{ts2}}",
+    "ts": {{ts2}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "uptime",
+    "sensor_value": 413575
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/uptime/{{ts3}}",
+    "ts": {{ts3}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "uptime",
+    "sensor_value": 86400
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/associated_users/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "associated_users",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/associated_users/{{ts4}}",
+    "ts": {{ts4}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "associated_users",
+    "sensor_value": 11
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/associated_users/{{ts5}}",
+    "ts": {{ts5}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "associated_users",
+    "sensor_value": 999
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_tx_volume/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_tx_volume",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_tx_volume/{{ts6}}",
+    "ts": {{ts6}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_tx_volume",
+    "sensor_value": 1393305
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_rx_volume/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_rx_volume",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_rx_volume/{{ts7}}",
+    "ts": {{ts7}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_rx_volume",
+    "sensor_value": 2730419
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_tx_speed/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_tx_speed",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_tx_speed/{{ts8}}",
+    "ts": {{ts8}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_tx_speed",
+    "sensor_value": 580
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_rx_speed/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_rx_speed",
+    "sensor_value": 0
+  },
+  {
+    "id": "20:28:3e:bc:0d:01/traffic_rx_speed/{{ts9}}",
+    "ts": {{ts9}},
+    "device_id": "AP15-8-2_8416",
+    "device_type": "ap",
+    "sensor_type": "traffic_rx_speed",
+    "sensor_value": 1137
+  },
+  {
+    "id": "20:28:3e:bc:1d:00/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "MAC-POS-01",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:1d:01/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "MAC-POS-02",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:0d:03/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "TEST-AP-001",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:0d:02/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "1",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:0d:05/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "a",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:2d:01/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "STANDALONE-POS-01",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:2d:02/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "STANDALONE-POS-02",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:3d:01/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "STATUS-POS-01",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:3d:02/availability/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "STATUS-POS-02",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:4d:05/uptime/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "NAS-POS-05",
+    "device_type": "ap",
+    "sensor_type": "uptime",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:4d:06/traffic_tx_volume/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "NAS-POS-06",
+    "device_type": "ap",
+    "sensor_type": "traffic_tx_volume",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:8d:01/associated_users/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "COORD-POS-01",
+    "device_type": "ap",
+    "sensor_type": "associated_users",
+    "sensor_value": 3
+  },
+  {
+    "id": "20:28:3e:bc:ad:02/traffic_rx_speed/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "CAT-POS-02",
+    "device_type": "ap",
+    "sensor_type": "traffic_rx_speed",
+    "sensor_value": 100
+  },
+  {
+    "id": "20:28:3e:bc:cd:01/traffic_tx_speed/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "ADDR-POS-01",
+    "device_type": "ap",
+    "sensor_type": "traffic_tx_speed",
+    "sensor_value": 50
+  },
+  {
+    "id": "20:28:3e:bc:ed:01/traffic_rx_volume/{{ts}}",
+    "ts": {{ts}},
+    "device_id": "LOCINFO-POS-01",
+    "device_type": "ap",
+    "sensor_type": "traffic_rx_volume",
+    "sensor_value": 1000
+  },
+  {
+    "id": "20:28:3e:bc:a1:04/availability/{{ts10}}",
+    "ts": {{ts10}},
+    "device_id": "LOCID-POS-04",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:a2:01/availability/{{ts11}}",
+    "ts": {{ts11}},
+    "device_id": "GK-POS-01",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:a3:01/availability/{{ts12}}",
+    "ts": {{ts12}},
+    "device_id": "PROV-POS-01",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  },
+  {
+    "id": "20:28:3e:bc:a4:01/availability/{{ts13}}",
+    "ts": {{ts13}},
+    "device_id": "ORIG-POS-01",
+    "device_type": "ap",
+    "sensor_type": "availability",
+    "sensor_value": 1
+  }
+]

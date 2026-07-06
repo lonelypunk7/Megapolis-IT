@@ -1,4 +1,4 @@
-# Megapolis-IT — Testing Infrastructure
+, з# Megapolis-IT — Testing Infrastructure
 
 ## ⚡ Быстрый старт
 
@@ -169,7 +169,7 @@ Project 22 — ITM
 # Проверить авторизацию
 curl -X POST https://testy.megapolis-it.pro/api/token/ \
   -H 'Content-Type: application/json' \
-  -d '{"username": "leonidgalockin", "password": "ihS|4#Ba"}'
+  -d '{"username": "", "password": ""}'
 
 # Проверить health
 curl -s http://mega-wifi.k8s.megapolis-it.pro/healthy

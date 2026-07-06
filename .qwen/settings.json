@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__chrome-devtools__click",
+      "Bash(4#ba@gitlab.megapolis-it.ru/quality-assurance/wi-fi_project *)",
+      "Bash(rm *)",
+      "Read(//Users/leonid/Projects/wi-fi_project/tests/UI/CaptivePortalClient/functional/sms-login/enter-phone-number/**)",
+      "Bash(gh *)",
+      "Bash(curl *)",
+      "Bash(ls *)",
+      "Bash(brew *)",
+      "Bash(which *)",
+      "Bash(cp *)",
+      "Bash(git init)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(open *)"
+    ]
+  },
+  "$version": 4
+}
